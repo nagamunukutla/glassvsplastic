@@ -265,8 +265,10 @@ def edge_features(img: np.ndarray, mask: np.ndarray) -> Dict[str, float]:
 
     lines = cv2.HoughLinesP(canny, 1, np.pi / 180, threshold=28,
                             minLineLength=max(12, g.shape[0] // 10), maxLineGap=4)
-    if lines is not None:
-        L = lines[:, 0, :]
+    # HoughLinesP returns (N, 1, 4) on OpenCV 4.x and (N, 4) on 5.x; normalise to (N, 4) so the
+    # descriptor is identical on both (the regression that broke CI on cv2 5.0.0).
+    if lines is not None and np.size(lines):
+        L = np.asarray(lines).reshape(-1, 4)
         lengths = np.hypot(L[:, 2] - L[:, 0], L[:, 3] - L[:, 1])
         feats["edge_n_lines"] = float(min(len(L), 100))
         feats["edge_line_len_mean"] = float(lengths.mean() / g.shape[0])
