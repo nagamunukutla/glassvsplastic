@@ -1,0 +1,51 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt pyyaml
+      - name: Unit + end-to-end tests
+        run: PYTHONPATH=src python -m unittest discover -s tests -v
+      - name: End-to-end pipeline (small dataset)
+        run: |
+          export PYTHONPATH=src
+          python -m gvp.cli synth --out data/processed/proxy --n-per-class 60 --size 96
+          python -m gvp.cli classical --data data/processed/proxy --out results
+          python -m gvp.cli report
+      - name: Registry integrity
+        run: |
+          python scripts/build_registry.py
+          git diff --exit-code -- data/ \
+            || (echo "::error::data/*.csv is stale - run scripts/build_registry.py and commit" && exit 1)
+
+  deep-tier-import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Deep tier must degrade gracefully without torch
+        run: |
+          pip install -r requirements.txt
+          PYTHONPATH=src python -m gvp.cli deep --epochs 1 2>&1 | tee /tmp/out.txt
+          grep -q "PyTorch is not installed" /tmp/out.txt \
+            || (echo "::error::deep tier should print install instructions when torch is missing" && exit 1)

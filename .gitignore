@@ -1,0 +1,30 @@
+# data (regenerate with `make proxy`); public datasets are never committed
+data/raw/*
+data/processed/*
+!data/*.csv
+!data/README.md
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+*.cache/
+.cache/
+
+# results are committed for the registry/report, but figures can be regenerated
+results/deep/
+/artifacts/
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+build/
+dist/
+
+# editors / os
+.DS_Store
+.idea/
+.vscode/

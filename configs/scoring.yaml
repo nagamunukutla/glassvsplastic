@@ -1,0 +1,97 @@
+# Weighting profiles for the composite "glass-vs-plastic suitability" score.
+#
+# The nine criteria are scored 1-5 per model in data/model_scores.csv (5 = best; cost and
+# latency are scored as *efficiency*, i.e. 5 = cheapest / fastest). The composite is a plain
+# weighted mean, so every ranking in docs/06_model_comparison.md is reproducible from these
+# two files. Change the weights and re-run `python -m gvp.cli report` to see the ranking move:
+# the weights are an assumption, not a result, and this file is where you disagree with us.
+#
+# Criteria
+#   accuracy_ceiling         realistic attainable accuracy for glass-vs-plastic, incl. hard cases
+#   transparency_robustness  works when both classes are clear/shiny (the crux of this problem)
+#   data_efficiency          value obtained with few labels
+#   contamination_robustness dirt, labels, occluders, mixed streams
+#   cost_efficiency          BOM + compute + integration cost
+#   throughput               real-time capability at belt speed
+#   explainability           can a decision be justified to an operator/auditor
+#   tooling_maturity         off-the-shelf availability, docs, quantisation, support
+#   calibration_abstention   supports a trusted "don't know" / reject decision
+#   zero_shot_capability     useful with *zero* labels (works out of the box)
+
+default: balanced_commercial
+
+weights:
+  balanced_commercial:
+    label: "Balanced commercial deployment"
+    description: "A single sorting line that must be accurate, maintainable and not crazy expensive."
+    weights:
+      accuracy_ceiling: 0.18
+      transparency_robustness: 0.20
+      data_efficiency: 0.12
+      contamination_robustness: 0.12
+      cost_efficiency: 0.10
+      throughput: 0.08
+      explainability: 0.07
+      tooling_maturity: 0.08
+      calibration_abstention: 0.05
+      zero_shot_capability: 0.03
+
+  accuracy_first:
+    label: "Accuracy first (purity-driven)"
+    description: "High-value stream, or the transparent-glass-vs-transparent-plastic decision must be right."
+    weights:
+      accuracy_ceiling: 0.28
+      transparency_robustness: 0.28
+      data_efficiency: 0.05
+      contamination_robustness: 0.15
+      cost_efficiency: 0.03
+      throughput: 0.05
+      explainability: 0.06
+      tooling_maturity: 0.05
+      calibration_abstention: 0.05
+      zero_shot_capability: 0.02
+
+  edge_budget:
+    label: "Edge / embedded budget"
+    description: "CPU/NPU on the machine, no server, strict cost and latency."
+    weights:
+      accuracy_ceiling: 0.14
+      transparency_robustness: 0.16
+      data_efficiency: 0.16
+      contamination_robustness: 0.10
+      cost_efficiency: 0.22
+      throughput: 0.12
+      explainability: 0.04
+      tooling_maturity: 0.04
+      calibration_abstention: 0.02
+      zero_shot_capability: 0.03
+
+  cold_start:
+    label: "Cold start / no labels"
+    description: "You have a camera and no annotated data yet, and the taxonomy will change."
+    weights:
+      accuracy_ceiling: 0.11
+      transparency_robustness: 0.15
+      data_efficiency: 0.15
+      contamination_robustness: 0.07
+      cost_efficiency: 0.08
+      throughput: 0.05
+      explainability: 0.04
+      tooling_maturity: 0.07
+      calibration_abstention: 0.05
+      zero_shot_capability: 0.23
+
+  research_benchmark:
+    label: "Research benchmark"
+    description: "Maximise evidence quality and interpretability of the comparison itself."
+    weights:
+      accuracy_ceiling: 0.16
+      transparency_robustness: 0.22
+      data_efficiency: 0.08
+      contamination_robustness: 0.12
+      cost_efficiency: 0.06
+      throughput: 0.04
+      explainability: 0.14
+      tooling_maturity: 0.10
+      calibration_abstention: 0.08
+      zero_shot_capability: 0.01

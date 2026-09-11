@@ -1,0 +1,12 @@
+{
+  "data_dir": "/home/user/glass-vs-plastic/data/processed/proxy",
+  "n_models": 10,
+  "best_model": "hist_gbdt",
+  "best_test_balanced_accuracy": 0.9444444444444444,
+  "ci95": [
+    0.8959713047359756,
+    0.9879573170731707
+  ],
+  "seconds": 119.1,
+  "caveat": "synthetic proxy data - diagnostics only, see docs/03_datasets_and_benchmarks.md"
+}

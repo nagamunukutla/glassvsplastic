@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gvp"
+version = "0.1.0"
+description = "Glass vs Plastic: a study of algorithms and models for material discrimination"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Glass-vs-Plastic study contributors" }]
+keywords = ["material-classification", "waste-sorting", "recycling", "glass", "plastic", "computer-vision"]
+classifiers = [
+  "Intended Audience :: Science/Research",
+  "Topic :: Scientific/Engineering :: Image Recognition",
+  "License :: OSI Approved :: MIT License",
+]
+dependencies = [
+  "numpy>=1.23", "scipy>=1.9", "scikit-learn>=1.2", "opencv-python-headless>=4.7",
+  "scikit-image>=0.20", "matplotlib>=3.7", "pandas>=2.0", "PyYAML>=6.0",
+]
+
+[project.optional-dependencies]
+deep = ["torch>=2.1", "torchvision>=0.16", "timm>=0.9.12", "Pillow>=10.0"]
+dev = ["pytest>=7.4"]
+
+[project.scripts]
+gvp = "gvp.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

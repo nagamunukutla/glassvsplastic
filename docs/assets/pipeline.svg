@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 720" width="980" height="720" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+  <defs>
+    <marker id="a" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L7,3 L0,6 z" fill="#5b6b7c"/>
+    </marker>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#e8f0f8"/><stop offset="100%" stop-color="#d7e6f5"/>
+    </linearGradient>
+  </defs>
+  <rect width="980" height="720" fill="#f7f9fb"/>
+  <text x="24" y="34" font-size="19" font-weight="700" fill="#12202e">Glass vs Plastic — the decision pipeline</text>
+  <text x="24" y="55" font-size="12.5" fill="#5b6b7c">Where the information comes from, what each stage can decide, and where the documented failures happen.</text>
+
+  <!-- stage 1: sensing -->
+  <rect x="24" y="76" width="250" height="150" rx="10" fill="url(#g1)" stroke="#b8cfe4"/>
+  <text x="38" y="99" font-size="13" font-weight="700" fill="#12202e">1 · SENSING</text>
+  <text x="38" y="122" font-size="11.5" fill="#33475c">RGB camera — cheap, shape/colour/context</text>
+  <text x="38" y="140" font-size="11.5" fill="#33475c">NIR / SWIR / FTIR — polymer chemistry</text>
+  <text x="38" y="158" font-size="11.5" fill="#33475c">Hyperspectral — chemistry + space</text>
+  <text x="38" y="176" font-size="11.5" fill="#33475c">Polarisation — dielectric vs polymer</text>
+  <text x="38" y="194" font-size="11.5" fill="#33475c">Thermal / 3D — transparency &amp; objectness</text>
+  <text x="38" y="215" font-size="11" fill="#b3541e">Decides: which cues exist at all</text>
+
+  <!-- stage 2: cues -->
+  <rect x="298" y="76" width="250" height="150" rx="10" fill="#fff" stroke="#dbe3ea"/>
+  <text x="312" y="99" font-size="13" font-weight="700" fill="#12202e">2 · CUES (RGB)</text>
+  <text x="312" y="122" font-size="11.5" fill="#33475c">transmission / haze</text>
+  <text x="312" y="140" font-size="11.5" fill="#33475c">specular highlight morphology</text>
+  <text x="312" y="158" font-size="11.5" fill="#33475c">surface texture &amp; finish</text>
+  <text x="312" y="176" font-size="11.5" fill="#33475c">silhouette / rim geometry</text>
+  <text x="312" y="194" font-size="11.5" fill="#33475c">chromatic fringing</text>
+  <text x="312" y="215" font-size="11" fill="#b3541e">All are lighting- and scene-dependent</text>
+
+  <!-- stage 3: models -->
+  <rect x="572" y="76" width="384" height="150" rx="10" fill="#fff" stroke="#dbe3ea"/>
+  <text x="586" y="99" font-size="13" font-weight="700" fill="#12202e">3 · DECISION MODELS</text>
+  <rect x="586" y="110" width="356" height="26" rx="6" fill="#f2f7fc" stroke="#cfe0ef"/>
+  <text x="596" y="128" font-size="11.5" fill="#12202e">physics rule (1-D threshold) — floor ≈ 0.70</text>
+  <rect x="586" y="141" width="356" height="26" rx="6" fill="#f2f7fc" stroke="#cfe0ef"/>
+  <text x="596" y="159" font-size="11.5" fill="#12202e">classical ML on 142 descriptors — ≈ 0.93, robust, auditable</text>
+  <rect x="586" y="172" width="356" height="26" rx="6" fill="#f2f7fc" stroke="#cfe0ef"/>
+  <text x="596" y="190" font-size="11.5" fill="#12202e">CNN transfer / transformer / VLM — +few points, needs data</text>
+  <text x="586" y="215" font-size="11" fill="#b3541e">Families differ more in robustness than in peak accuracy</text>
+
+  <!-- arrows stage1->stage2->stage3 -->
+  <line x1="274" y1="151" x2="294" y2="151" stroke="#5b6b7c" stroke-width="1.4" marker-end="url(#a)"/>
+  <line x1="548" y1="151" x2="568" y2="151" stroke="#5b6b7c" stroke-width="1.4" marker-end="url(#a)"/>
+
+  <!-- stage 4: policy -->
+  <rect x="298" y="258" width="658" height="120" rx="10" fill="#fff8e6" stroke="#f0dca8"/>
+  <text x="312" y="281" font-size="13" font-weight="700" fill="#12202e">4 · OPERATING POLICY (this is the deliverable, not accuracy)</text>
+  <text x="312" y="306" font-size="11.5" fill="#33475c">calibrate on a production-matched set → temperature scaling → conformal prediction</text>
+  <text x="312" y="326" font-size="11.5" fill="#33475c">accept if p(glass) &gt; τ, else divert to a second sensor or manual QA</text>
+  <text x="312" y="346" font-size="11.5" fill="#33475c">report purity / recovery at the chosen τ, per stratum — never accuracy alone</text>
+  <text x="312" y="367" font-size="11" fill="#b3541e">Converts silent failures (black plastics, clear PET) into a managed reject stream</text>
+  <line x1="764" y1="226" x2="764" y2="254" stroke="#5b6b7c" stroke-width="1.4" marker-end="url(#a)"/>
+
+  <!-- failures -->
+  <text x="24" y="418" font-size="14" font-weight="700" fill="#12202e">Documented failure modes (measured in this repository, proxy task)</text>
+  <rect x="24" y="432" width="222" height="112" rx="9" fill="#fff" stroke="#dbe3ea"/>
+  <text x="36" y="454" font-size="12" font-weight="700" fill="#b3261e">scene shortcut</text>
+  <text x="36" y="474" font-size="11" fill="#33475c">model reads background,</text>
+  <text x="36" y="490" font-size="11" fill="#33475c">lighting or belt colour</text>
+  <text x="36" y="510" font-size="11" fill="#33475c">→ background-only control</text>
+  <text x="36" y="530" font-size="11" font-weight="600" fill="#1f7a45">detected: 0.51 ≈ chance</text>
+
+  <rect x="262" y="432" width="222" height="112" rx="9" fill="#fff" stroke="#dbe3ea"/>
+  <text x="274" y="454" font-size="12" font-weight="700" fill="#b3541e">clutter collapse</text>
+  <text x="274" y="474" font-size="11" fill="#33475c">debris &amp; glare inject</text>
+  <text x="274" y="490" font-size="11" fill="#33475c">glass-like highlights</text>
+  <text x="274" y="510" font-size="11" fill="#33475c">→ edges ×6.4, sat ×3.8</text>
+  <text x="274" y="530" font-size="11" font-weight="600" fill="#b3261e">all models → 0.50–0.53</text>
+
+  <rect x="500" y="432" width="222" height="112" rx="9" fill="#fff" stroke="#dbe3ea"/>
+  <text x="512" y="454" font-size="12" font-weight="700" fill="#b3541e">sensor-shift fragility</text>
+  <text x="512" y="474" font-size="11" fill="#33475c">noise / JPEG / shadow</text>
+  <text x="512" y="490" font-size="11" fill="#33475c">shift the feature scale</text>
+  <text x="512" y="510" font-size="11" fill="#33475c">→ RBF SVM collapses</text>
+  <text x="512" y="530" font-size="11" font-weight="600" fill="#b3261e">SVM 0.50 · trees 0.82–0.92</text>
+
+  <rect x="738" y="432" width="218" height="112" rx="9" fill="#fff" stroke="#dbe3ea"/>
+  <text x="750" y="454" font-size="12" font-weight="700" fill="#b3261e">transparent ←→ transparent</text>
+  <text x="750" y="474" font-size="11" fill="#33475c">clear glass vs clear PET</text>
+  <text x="750" y="490" font-size="11" fill="#33475c">shares shape, gloss, colour</text>
+  <text x="750" y="510" font-size="11" fill="#33475c">→ RGB alone plateaus</text>
+  <text x="750" y="530" font-size="11" font-weight="600" fill="#b3261e">fix: spectra or polarisation</text>
+
+  <!-- what works -->
+  <text x="24" y="588" font-size="14" font-weight="700" fill="#12202e">What the evidence supports, by budget</text>
+  <rect x="24" y="602" width="300" height="92" rx="9" fill="#eef7f1" stroke="#c7e3d3"/>
+  <text x="36" y="624" font-size="12" font-weight="700" fill="#1f7a45">no labels yet</text>
+  <text x="36" y="644" font-size="11" fill="#33475c">VLM zero-shot + prompt engineering (76–90%),</text>
+  <text x="36" y="660" font-size="11" fill="#33475c">then frozen features + training-free adapter,</text>
+  <text x="36" y="676" font-size="11" fill="#33475c">then distil to a small CNN.</text>
+
+  <rect x="340" y="602" width="300" height="92" rx="9" fill="#eef7f1" stroke="#c7e3d3"/>
+  <text x="352" y="624" font-size="12" font-weight="700" fill="#1f7a45">labels + one GPU</text>
+  <text x="352" y="644" font-size="11" fill="#33475c">DenseNet-121 / ConvNeXt-Tiny fine-tune,</text>
+  <text x="352" y="660" font-size="11" fill="#33475c">MobileNetV3/V4 on the belt, detection</text>
+  <text x="352" y="676" font-size="11" fill="#33475c">in front, rejection policy behind.</text>
+
+  <rect x="656" y="602" width="300" height="92" rx="9" fill="#eef7f1" stroke="#c7e3d3"/>
+  <text x="668" y="624" font-size="12" font-weight="700" fill="#1f7a45">purity is money</text>
+  <text x="668" y="644" font-size="11" fill="#33475c">NIR/HSI + PLS-DA or 1D-CNN,</text>
+  <text x="668" y="660" font-size="11" fill="#33475c">polarimetry for the clear-clear case,</text>
+  <text x="668" y="676" font-size="11" fill="#33475c">conformal rejection to manual QA.</text>
+</svg>
