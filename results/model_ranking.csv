@@ -1,0 +1,39 @@
+id,name,family,balanced_commercial,accuracy_first,edge_budget,cold_start,research_benchmark,tier
+heuristic_colour_threshold,Colour/intensity thresholding (industrial VIS sorter),Heuristic / physics-first,3.0388,2.2941,3.5049,3.59,2.8614,baseline
+heuristic_edge_texture,"Edge + texture descriptors (Canny/Sobel, LBP, GLCM)",Heuristic / physics-first,3.0485,2.4608,3.466,3.55,2.8614,baseline
+heuristic_specular_stats,Specular-highlight statistics (1-D rule),Heuristic / physics-first,3.6893,3.2647,4.0291,4.05,3.5545,baseline
+heuristic_transmission,Transmission / haze index (background-continuation),Heuristic / physics-first,3.1359,2.6863,3.5631,3.61,2.9604,baseline
+polarimetry_vision,Polarisation imaging (glass vs transparent plastic),Heuristic / physics-first (non-RGB sensor),3.5922,3.7451,3.6117,3.7,3.505,research
+svm_rbf_features,SVM (RBF) on hand-crafted features,Classical ML on features,3.6311,3.2255,3.932,3.21,3.5545,production (small-data)
+rf_extratrees_features,Random Forest / ExtraTrees on hand-crafted features,Classical ML on features,3.7282,3.451,3.9515,3.27,3.6733,production (small-data)
+lda_features,LDA / QDA on hand-crafted features,Classical ML on features,3.7476,3.3333,3.9903,3.3,3.7723,baseline / production (linear reference)
+gbdt_features,Gradient-boosted trees (HistGradientBoosting/XGBoost/LightGBM),Classical ML on features,3.6699,3.4412,3.8932,3.18,3.5743,production (small-mid data)
+knn_gmm_features,k-NN / Gaussian mixture / Mahalanobis on features,Classical ML on features,3.5534,3.1961,3.8252,3.37,3.505,production (small-data)
+mlp_shallow_features,Shallow MLP on hand-crafted features,Classical ML on features,3.1845,2.9608,3.5049,2.76,3.0198,research
+cnn_small_scratch,Small CNN trained from scratch (4-8 conv layers),CNN from scratch,3.0,2.9902,3.1165,2.52,3.0,baseline / research
+cnn_lightweight_research,"Purpose-built lightweight CNNs (RecycleNet, Focus-RCNet-KD, WasNet)",CNN from scratch (waste-specific designs),3.3204,3.2843,3.6602,2.8,3.099,production (edge)
+cnn_resnet18,ResNet-18 (transfer learning),CNN transfer learning,3.5243,3.4216,3.6311,3.26,3.3861,baseline
+cnn_resnet50,ResNet-50 / ResNeXt-50 32x4d (transfer learning),CNN transfer learning,3.3495,3.3431,3.301,3.13,3.2871,baseline / production
+cnn_densenet121,DenseNet-121 / -169 (transfer learning),CNN transfer learning,3.8155,3.9216,3.8058,3.47,3.7228,baseline / production
+cnn_vgg16,VGG-16 / VGG-19 (transfer learning),CNN transfer learning,2.466,2.7157,2.1359,2.34,2.5941,legacy baseline
+cnn_inception_xception,Inception-v3 / Xception / InceptionResNetV2,CNN transfer learning,3.3495,3.5196,3.2621,3.06,3.3267,baseline / production
+cnn_mobilenet_v2,MobileNetV2 / ShuffleNetV2 (1.0x),CNN transfer learning (mobile),3.699,3.5,3.9612,3.39,3.4851,production (edge)
+cnn_mobilenet_v3,MobileNetV3-Large / -Small,CNN transfer learning (mobile),3.699,3.5,3.9612,3.39,3.4851,production (edge)
+cnn_mobilenet_v4,MobileNetV4 (Conv-S / Hybrid-L),"CNN transfer learning (mobile, 2024)",3.7379,3.6765,4.0388,3.4,3.505,"production (edge, new)"
+cnn_efficientnet_b0_b3,EfficientNet-B0 / -B3,CNN transfer learning,3.7184,3.6961,3.7864,3.41,3.604,production
+cnn_efficientnetv2,EfficientNetV2-S / -M,CNN transfer learning,3.5243,3.7941,3.3204,3.19,3.5446,research / production (server)
+cnn_convnext_tiny,ConvNeXt-Tiny / -Small,CNN transfer learning (modern CNN),3.6408,3.9412,3.4951,3.24,3.604,research / production
+cnn_regnety,RegNetY-3.2GF / InceptionNeXt-T,CNN transfer learning,3.466,3.6667,3.3592,3.13,3.4455,research
+vit_b16,ViT-B/16 (supervised fine-tune),Transformer,3.3495,3.7451,3.0,3.2,3.5149,research
+deit_small_tiny,DeiT-Tiny / DeiT-Small (distilled ViT),Transformer (data-efficient),3.5146,3.6569,3.3689,3.37,3.6139,research
+swin_maxvit,Swin-T/SwinV2-T / MaxViT-T (hierarchical attention),Hybrid transformer,3.6408,4.1667,3.233,3.38,3.7921,research / production (server)
+attention_cnn,Attention-augmented CNN (SE / CBAM / attention-AlexNet) and multi-scale fusion,Hybrid / attention,3.5243,3.8824,3.4272,2.91,3.5347,research
+vlm_clip_zeroshot,CLIP / OpenCLIP / SigLIP — zero-shot classification,Foundation model / VLM,3.3981,3.1863,3.4272,3.85,3.297,production (bootstrap) / research
+vlm_fewshot_adapter,Frozen foundation features + training-free adapter (Tip-Adapter / kNN / linear probe),Foundation model / VLM (few-shot),3.6408,3.5392,3.5728,3.83,3.604,production (bootstrap)
+mllm_zero_shot,Multimodal LLM as a classifier (GPT-4o / LLaVA-OneVision),Foundation model / VLM (language interface),2.9223,2.8922,2.6699,3.49,3.0198,research / tooling
+openvocab_detect_classify,"Open-vocabulary detect-then-classify (Grounding DINO + CLIP, EcoVision)",Foundation model pipeline,3.6505,3.8824,3.3786,3.72,3.703,research / production
+spectral_nir_ftir,NIR / FTIR spectroscopy + PLS-DA or 1D-CNN,Spectral sensor + learned model,3.9709,4.3039,3.6893,3.55,4.099,production (reference modality)
+hsi_glass_plastic,Hyperspectral imaging (VIS-NIR / SWIR) + ML,Spectral imaging + learned model,3.7767,4.2451,3.4563,3.33,3.8812,production (industrial) / research
+multisensor_fusion,"Custom sensor fusion (RGB+HSI, RGB+polarisation, RGB+thermal, RGB+depth/3D)",Multisensor fusion,3.4951,4.1961,3.0,2.82,3.7129,production (industrial) / research
+thermal_rgb_3d,Thermal IR and 3D/structured-light sensing for transparent objects,Non-RGB sensing,3.2816,3.402,3.2233,2.99,3.3267,research
+uncertainty_rejection,"Uncertainty + rejection layer (conformal prediction, MC-dropout, ensembles, OOD)",Method layer (model-agnostic),4.3204,4.3627,4.2233,4.11,4.4653,production (mandatory in practice)

@@ -1,0 +1,8 @@
+# Optional deep-learning tier (src/gvp/deep.py). Install on top of requirements.txt.
+# CPU-only wheels are fine for the small proxy dataset.
+torch>=2.1
+torchvision>=0.16
+timm>=0.9.12
+Pillow>=10.0
+# Optional, for ONNX export verification:
+# onnx>=1.15

@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use this comparison registry or the evaluation protocol, cite it alongside the primary sources it aggregates (see data/references.csv)."
+title: "Glass vs Plastic: a study of algorithms, models and sensors for material discrimination"
+abstract: >-
+  A comparison of 38 model families and sensor configurations for separating glass from plastic,
+  scored on ten criteria with four weighting profiles, together with a reproducible classical-ML
+  tier, an optional PyTorch/timm tier, a physics-based cue taxonomy, and an evaluation protocol
+  including leakage controls and a statistical power analysis.
+version: 0.1.0
+date-released: 2026-09-11
+license: MIT
+type: software
+keywords:
+  - material classification
+  - waste sorting
+  - recycling
+  - glass
+  - plastic
+  - computer vision
+  - hyperspectral imaging
+  - evaluation protocol
