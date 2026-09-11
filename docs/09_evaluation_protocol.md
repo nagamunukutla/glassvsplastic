@@ -97,9 +97,10 @@ Approximate number of **test items per split** to detect a difference between tw
 | 2 percentage points | ~3,050 |
 
 For paired comparisons (same test items, two models) the requirement is roughly halved. This is the
-concrete reason the repository's own cue ablation cannot resolve single-cue effects: at n = 120
-per condition the measured 95% CI widths were 0.09–0.13, and at the `make cues` default of n = 60
-they widen to 0.11–0.20 — while the largest single-cue effect observed was 0.02 (see
+concrete reason the repository's own cue ablation cannot resolve single-cue effects: at the
+`make cues` default (400 items per class -> n = 120 test items per condition) the measured 95% CI
+widths were 0.087–0.122, and an earlier, smaller run (200 per class -> n = 60) produced widths of
+0.11–0.20 — while the largest single-cue effect observed was 0.022 (see
 `results/MEASURED_RESULTS.md` §5). **A cue-importance study needs a factorial design with ≥1,000
 items per cell, or a dose-response design with graded cue strengths and the same total n.**
 Publishing a 2-point ablation difference at n = 100 is not a finding.

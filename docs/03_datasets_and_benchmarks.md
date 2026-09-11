@@ -88,6 +88,58 @@ Aggregating the numbers cited in `docs/12_references.md`:
    accuracy in the entire literature. But it is not a substitute for fine-tuning, and the prompt
    sensitivity it exposes [R29] is a maintenance liability.
 
+## 3.2b Measured: the backdrop carries most of the glass-vs-plastic signal
+
+Everything above quotes the literature. This repository also ran the experiment on **real TrashNet
+data**, using the authors' official train/val/test split files, restricted to the glass and plastic
+classes (983 images). Full details in [`results/real/REAL_DATA_RESULTS.md`](../results/real/REAL_DATA_RESULTS.md) and the one-table view in [`results/real/MEASURED_MODEL_COMPARISON.md`](../results/real/MEASURED_MODEL_COMPARISON.md);
+the headline:
+
+| Probe (test split, 156 images) | Balanced accuracy |
+|---|---|
+| MobileNetV3-Large fine-tuned, full frame | **0.936** |
+| ResNet-18 fine-tuned, full frame | 0.930 |
+| EfficientNet-B0 fine-tuned, full frame | 0.929 |
+| Classical models on 142 descriptors, full image | 0.763 – 0.880 |
+| Backdrop ring only (3% strip, no object pixels) | 0.800 – 0.815 |
+| Object only (background removed) | 0.827 – 0.846 |
+| Best single scene attribute (`bg_r` threshold) | 0.666 |
+| Shuffled labels (control) | 0.449 – 0.450 |
+
+Backdrop type and material class are associated with Cramér's V = 0.279 (χ² = 76.7, p ≈ 1e-16),
+and the dataset is 65% grey studio backdrop / 33% cardboard.
+
+**Interpretation.** On this benchmark, a model that never sees the object — only a 3%-wide strip of
+backdrop — reaches ~0.80 of the ~0.88–0.94 that full-image models achieve. The object contributes
+real signal too (~0.83 on its own), but the two are heavily redundant, and a large part of what a
+published "glass vs plastic" number measures on TrashNet is the studio, not the material. This is
+the concrete, measured version of the shortcut warning in §3.1 and the reason
+`docs/09_evaluation_protocol.md` makes the scene-only control mandatory. It is also the reason this
+repository refuses to quote TrashNet accuracies as if they were material-classification accuracy.
+
+Note the design lesson, since this repository got it wrong first: **rectangular blanking is not a
+valid scene-only control on this dataset** — TrashNet objects are rotated and reach into the frame
+corners, so a "90% blanked" image still contains object fragments (see the montage in
+`results/real/figures/control_visual_check.png`). Only the thin-ring probe, verified visually,
+isolates the scene.
+
+**Cropping the backdrop away is the cheapest test of what a model learned — and its result is
+architecture-specific.** Repeating each backbone's fine-tune with the object cropped out of the
+frame (backdrop removed, nothing else changed) gives:
+
+| Backbone | Full frame | Object crop | Change |
+|---|---|---|---|
+| MobileNetV3-Large | 0.936 | 0.943 | +0.007 |
+| EfficientNet-B0 | 0.929 | 0.923 | −0.006 |
+| ResNet-18 | 0.930 | 0.868 | **−0.062** |
+
+So it is not true that "fine-tuned CNNs read the studio": one widely used backbone loses most of a
+publication-sized margin when the backdrop goes, and two others do not move. The practical rule for
+this project is therefore *measure the crop test per candidate backbone* rather than reasoning about
+the family — it costs one extra training run and it is the only evidence that separates a model that
+learned the material from one that learned the room. Two limits, stated rather than hidden: the crop
+also upsamples the object, and each configuration is a single seed.
+
 ## 3.3 The benchmark this project uses, and why
 
 Because no redistributable glass-vs-plastic set exists inside a repository, `gvp.synth` renders a

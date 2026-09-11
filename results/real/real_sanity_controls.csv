@@ -1,0 +1,19 @@
+control,model,balanced_accuracy,expected
+shuffled_labels,svm_rbf,0.448582729070534,≈0.50 (leak if > 0.55)
+shuffled_labels,extra_trees,0.44990112063282794,≈0.50 (leak if > 0.55)
+scene_only_blank50,svm_rbf,0.788233355306526,≈0.50 (scene shortcut if > 0.60)
+scene_only_blank50,extra_trees,0.8254779169413315,≈0.50 (scene shortcut if > 0.60)
+scene_only_blank75,svm_rbf,0.7949901120632827,≈0.50 (scene shortcut if > 0.60)
+scene_only_blank75,extra_trees,0.7875741595253791,≈0.50 (scene shortcut if > 0.60)
+scene_only_blank90,svm_rbf,0.7564271588661833,≈0.50 (scene shortcut if > 0.60)
+scene_only_blank90,extra_trees,0.8213579433091629,≈0.50 (scene shortcut if > 0.60)
+scene_only_ring3,svm_rbf,0.8146011865524061,≈0.50 (scene shortcut if > 0.60)
+scene_only_ring3,extra_trees,0.8004284772577455,≈0.50 (scene shortcut if > 0.60)
+scene_only_ring6,svm_rbf,0.8152603823335531,≈0.50 (scene shortcut if > 0.60)
+scene_only_ring6,extra_trees,0.8470665787738958,≈0.50 (scene shortcut if > 0.60)
+object_only_mask,svm_rbf,0.8457481872116018,high = the object carries the signal by itself
+object_only_mask,extra_trees,0.8274555042847725,high = the object carries the signal by itself
+object_only_margin15,svm_rbf,0.8267963085036256,≈0.50 if the scene is essential; high = object carries the signal
+object_only_margin15,extra_trees,0.8261371127224786,≈0.50 if the scene is essential; high = object carries the signal
+object_only_margin25,svm_rbf,0.8450889914304549,≈0.50 if the scene is essential; high = object carries the signal
+object_only_margin25,extra_trees,0.8328938694792354,≈0.50 if the scene is essential; high = object carries the signal

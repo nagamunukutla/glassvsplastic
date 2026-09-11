@@ -93,6 +93,71 @@ def mask_centre(cover: float = 0.8):
     return _fn
 
 
+def mask_border(margin: float = 0.18, fill: int = 127):
+    """Factory: replace the image border ring with a constant, keeping the centre.
+
+    The *object-only* control, complementing :func:`mask_centre` (the scene-only control).
+    Together they separate two failure modes:
+
+    * high score on ``mask_centre``  -> the model is reading the scene, not the item;
+    * big drop        on ``mask_border`` -> the model *needs* the scene, i.e. it is not deciding
+      from the object at all.
+
+    ``fill`` is a neutral grey by default (not the border colour), so the replaced region carries
+    no information about the original scene.
+    """
+    def _fn(img: np.ndarray) -> np.ndarray:
+        h, w = img.shape[:2]
+        out = np.full_like(img, fill)
+        y0, y1 = int(h * margin), int(h * (1 - margin))
+        x0, x1 = int(w * margin), int(w * (1 - margin))
+        out[y0:y1, x0:x1] = img[y0:y1, x0:x1]
+        return out
+
+    _fn.__name__ = f"border{margin}"
+    return _fn
+
+
+def mask_outer_ring(keep: float = 0.03, fill: int = 127):
+    """Factory: keep only a thin outer ring, replacing everything else with ``fill``.
+
+    The *strict* scene-only control. Rectangular blanking is leaky on datasets whose objects are
+    rotated and reach into the corners (verified visually on TrashNet: at 90% blanking, object
+    fragments remain visible on a diagonally-placed bottle). A thin outer ring is the region that
+    is genuinely backdrop, so a score here is attributable to the scene alone.
+    """
+    def _fn(img: np.ndarray) -> np.ndarray:
+        h, w = img.shape[:2]
+        out = np.full_like(img, fill)
+        m = max(2, int(min(h, w) * keep))
+        out[:m], out[-m:], out[:, :m], out[:, -m:] = img[:m], img[-m:], img[:, :m], img[:, -m:]
+        return out
+
+    _fn.__name__ = f"ring{int(keep * 100)}"
+    return _fn
+
+
+def mask_non_object(dilate: int = 9, fill: int = 127):
+    """Factory: keep only the estimated object, replace the rest with neutral grey.
+
+    A mask-based *object-only* control, which unlike a rectangular crop survives rotated objects.
+    Uses the same foreground estimator as the feature pipeline (``gvp.features.estimate_foreground``)
+    so it inherits, and exposes, the estimator's own failure modes.
+    """
+    def _fn(img: np.ndarray) -> np.ndarray:
+        from .features import estimate_foreground
+        mask = estimate_foreground(img)
+        if dilate:
+            mask = cv2.dilate(mask, np.ones((dilate, dilate), np.uint8), iterations=1)
+        out = np.full_like(img, fill)
+        sel = mask > 0
+        out[sel] = img[sel]
+        return out
+
+    _fn.__name__ = f"objonly{dilate}"
+    return _fn
+
+
 def extract_split(data_dir: str, manifest: str, blocks: Sequence[str] = FEATURE_BLOCKS,
                   tag: str = "", use_cache: bool = True,
                   transform=None) -> Dict[str, np.ndarray]:

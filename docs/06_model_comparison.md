@@ -12,6 +12,9 @@ This document is generated (`python -m gvp.cli report`) from three data files:
 > **How to read this.** The registry is a *literature-and-architecture* comparison: `evidence` fields quote numbers from the papers cited in `docs/12_references.md`, not numbers produced by this repository. Repository measurements (on the synthetic proxy task) are in `results/MEASURED_RESULTS.md` and are, deliberately, reported separately. Never mix the two.
 
 
+> **Cited vs measured.** This chapter compares options as *reported in the literature*. For the configurations actually trained and measured in this repository, on a real public dataset, see `results/real/MEASURED_MODEL_COMPARISON.md` — the same question answered with numbers produced here. Where the two disagree (they do: on fine-tuned CNNs vs hand-crafted descriptors, and on whether single-feature physics rules transfer at all), the measured table wins for that dataset.
+
+
 ## 1. Composite ranking (default profile: *Balanced commercial deployment*)
 
 

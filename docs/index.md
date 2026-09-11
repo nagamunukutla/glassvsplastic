@@ -55,7 +55,9 @@ image at all, and when do you need a different physical measurement?*
 |---|---|
 | `docs/06_model_comparison.md` | the full comparison, regenerated from the data files |
 | `results/model_comparison.html` | self-contained interactive version (sort, filter, re-weight the criteria) |
-| `results/MEASURED_RESULTS.md` | every number this repository measured, with its caveats |
+| `results/MEASURED_RESULTS.md` | every number this repository measured on the synthetic proxy task, with its caveats |
+| `results/real/MEASURED_MODEL_COMPARISON.md` | **the measured comparison on a real dataset** — every configuration in one table, with the advantage/disadvantage its measurement supports |
+| `results/real/REAL_DATA_RESULTS.md` | the real-data study on TrashNet: audit, leakage controls, deep tier |
 | `results/*.csv` | raw outputs: model comparison, feature/cue ablations, shift robustness, controls, rules |
 | `results/model_ranking.csv` | composite scores for all 38 options under all four profiles |
 | `data/model_registry.csv` | the source of truth for architecture facts and cited evidence |

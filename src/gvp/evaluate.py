@@ -181,6 +181,8 @@ def md_table(rows: List[Dict[str, object]], columns: Sequence[str] | None = None
         return "_(no rows)_"
     columns = list(columns or rows[0].keys())
     def _fmt(v: object) -> str:
+        if v is None:                 # a field the run did not record
+            return "—"
         if isinstance(v, float):
             if np.isnan(v):
                 return "—"

@@ -226,7 +226,10 @@ def train_and_eval(cfg: TrainConfig) -> Dict[str, object]:
     opt = torch.optim.AdamW(params, lr=cfg.lr, weight_decay=cfg.weight_decay)
     sched = torch.optim.lr_scheduler.OneCycleLR(
         opt, max_lr=cfg.lr, total_steps=max(1, cfg.epochs * max(1, len(tr_ld))), pct_start=0.25)
-    scaler = torch.cuda.amp.GradScaler(enabled=(cfg.amp and device == "cuda"))
+    try:  # torch >= 2.4
+        scaler = torch.amp.GradScaler("cuda", enabled=(cfg.amp and device == "cuda"))
+    except (AttributeError, TypeError):  # older torch
+        scaler = torch.cuda.amp.GradScaler(enabled=(cfg.amp and device == "cuda"))
 
     history: List[dict] = []
     for epoch in range(cfg.epochs):

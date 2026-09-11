@@ -1,0 +1,11 @@
+{
+ "model": "tv:efficientnet_b0",
+ "variant": "object_crop",
+ "img_size": 160,
+ "epochs": 8,
+ "batch_size": 8,
+ "seed": 0,
+ "wall_seconds": 390.2,
+ "notes": "real TrashNet glass-vs-plastic, object_crop",
+ "source": "wall time as printed by the run at the time (see README/study log); recorded here because the curated CSV union overwrote it"
+}

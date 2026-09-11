@@ -159,10 +159,16 @@ def render_comparison_md(registry, scores, profiles, ranked, measured, docs_dir=
       "`docs/12_references.md`, not numbers produced by this repository. Repository measurements "
       "(on the synthetic proxy task) are in `results/MEASURED_RESULTS.md` and are, deliberately, "
       "reported separately. Never mix the two.\n")
+    A("\n> **Cited vs measured.** This chapter compares options as *reported in the literature*. "
+      "For the configurations actually trained and measured in this repository, on a real public "
+      "dataset, see `results/real/MEASURED_MODEL_COMPARISON.md` — the same question answered with "
+      "numbers produced here. Where the two disagree (they do: on fine-tuned CNNs vs hand-crafted "
+      "descriptors, and on whether single-feature physics rules transfer at all), the measured "
+      "table wins for that dataset.\n")
 
     # ---- ranking table
     A("\n## 1. Composite ranking (default profile: *%s*)\n" % profiles["weights"][default_name]["label"])
-    A(f"\n37 architectural options are ranked below. Cross-cutting *components* "
+    A(f"\n{len(model_ids)} architectural options are ranked below. Cross-cutting *components* "
       f"({len(comp_ids)}) are deliberately excluded — ranking a rejection layer against a model "
       f"would be a category error — and appear in §1c instead.\n")
     A("\nWeights: " + ", ".join(f"`{k}` {v:.2f}" for k, v in profiles["weights"][default_name]["weights"].items()) + "\n")

@@ -1,0 +1,77 @@
+{
+  "config": {
+    "model": "tv:resnet18",
+    "data_dir": "data/raw/trashnet_cropped",
+    "out_dir": "results/real/deep",
+    "epochs": 8,
+    "batch_size": 12,
+    "lr": 0.0003,
+    "weight_decay": 0.05,
+    "img_size": 192,
+    "freeze_backbone": false,
+    "label_smoothing": 0.05,
+    "mixup": 0.0,
+    "num_workers": 2,
+    "seed": 0,
+    "train_split": "train",
+    "val_split": "val",
+    "test_splits": [
+      "test"
+    ],
+    "device": "auto",
+    "amp": true,
+    "class_balance": true,
+    "channels_last": true,
+    "notes": "real TrashNet glass-vs-plastic, object_crop"
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 0.5716458875043638,
+      "val_balanced_accuracy": 0.848297604035309,
+      "seconds": 68.2
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.4371881240914608,
+      "val_balanced_accuracy": 0.6920554854981085,
+      "seconds": 69.6
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.4673737038312287,
+      "val_balanced_accuracy": 0.8083228247162673,
+      "seconds": 67.5
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.3385019227862358,
+      "val_balanced_accuracy": 0.8887767969735183,
+      "seconds": 69.4
+    },
+    {
+      "epoch": 5,
+      "train_loss": 0.27681338710003883,
+      "val_balanced_accuracy": 0.8216897856242118,
+      "seconds": 65.9
+    },
+    {
+      "epoch": 6,
+      "train_loss": 0.23201684294075803,
+      "val_balanced_accuracy": 0.8969735182849937,
+      "seconds": 69.0
+    },
+    {
+      "epoch": 7,
+      "train_loss": 0.2031429846738947,
+      "val_balanced_accuracy": 0.8877679697351828,
+      "seconds": 67.7
+    },
+    {
+      "epoch": 8,
+      "train_loss": 0.19261737707360038,
+      "val_balanced_accuracy": 0.8959646910466583,
+      "seconds": 63.9
+    }
+  ]
+}

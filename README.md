@@ -51,6 +51,52 @@ PyTorch/timm tier, and an evaluation protocol written so that a claim made with 
 Full reasoning: **[`docs/index.md`](docs/index.md)** · the table: **[`docs/06_model_comparison.md`](docs/06_model_comparison.md)**
 · interactive: **[`results/model_comparison.html`](results/model_comparison.html)**
 
+## Measured on real data (TrashNet, official splits)
+
+Beyond the cited literature, the repository trains and evaluates everything itself on a public
+dataset: TrashNet, restricted to the glass and plastic classes, on the authors' own test split
+(156 images).
+
+| Configuration (test n = 156) | Balanced accuracy |
+|---|---|
+| **MobileNetV3-Large, fine-tuned, full frame** | **0.936** |
+| MobileNetV3-Large, fine-tuned, object cropped | 0.943 |
+| ResNet-18, fine-tuned, full frame | 0.930 |
+| EfficientNet-B0, fine-tuned, full frame | 0.929 |
+| Classical models on 142 descriptors, full image | 0.763 – 0.880 |
+| **Backdrop ring only** (3% strip, no object pixels) | **0.800 – 0.815** |
+| Object only (background removed) | 0.827 – 0.846 |
+| 6 scene statistics (logistic regression, no object) | 0.725 |
+| Single-feature physics rules (1-D threshold) | 0.487 – 0.556 |
+| Shuffled labels (control) | 0.449 |
+
+Three findings, in the order they matter for a real deployment:
+
+1. **What the input contains moves the number more than which model you pick.** Every fine-tuned
+   backbone lands at 0.93 on full frames; the spread between the best and worst *classical* model on
+   the same features is larger than the spread between the three backbones. But a model that sees
+   only a 3% strip of studio backdrop — nothing of the object — already scores 0.80. On TrashNet, a
+   large part of a published "glass vs plastic" accuracy is the room.
+2. **Whether a model leans on that backdrop is architecture-specific, and must be measured.** Removing
+   the backdrop costs ResNet-18 6.2 points (0.930 → 0.868) and nearly triples its
+   glass-passed-as-plastic rate (7.3% → 18.3%), while MobileNetV3-Large and EfficientNet-B0 barely
+   move (−0.006 to +0.007). So "fine-tuned CNN" does not predict behaviour here: crop one backbone
+   and re-measure.
+3. **Cost separates the backbones that accuracy does not.** MobileNetV3-Large reaches the top score
+   with 4.2M parameters, 0.11G MACs and 8.6 ms/image — 12× fewer MACs and 2.8× faster than
+   ResNet-18 for the same accuracy. On this evidence it is the default choice for an edge device.
+
+Honest limits: 156 test images (95% CIs ±0.05–0.08, so a few points is not a resolved difference),
+single seed per configuration, ResNet-18 fine-tuned at 192 px while the other two ran at 160 px
+(memory budget — noted in the report), and the crop also upsamples the object, a confound this
+design does not isolate.
+
+* [`results/real/MEASURED_MODEL_COMPARISON.md`](results/real/MEASURED_MODEL_COMPARISON.md) — **the
+  comparison table**: every measured configuration with accuracy, per-class recall, error direction,
+  parameters, MACs, latency, and the advantage/disadvantage its own measurement supports.
+* [`results/real/REAL_DATA_RESULTS.md`](results/real/REAL_DATA_RESULTS.md) — the full real-data study
+  (audit, leakage controls, backdrop-stratified accuracy, synthetic-vs-real gap, deep tier).
+
 ## Quickstart
 
 ```bash

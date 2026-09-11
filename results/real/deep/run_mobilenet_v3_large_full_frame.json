@@ -1,0 +1,11 @@
+{
+ "model": "tv:mobilenet_v3_large",
+ "variant": "full_frame",
+ "img_size": 160,
+ "epochs": 8,
+ "batch_size": 8,
+ "seed": 0,
+ "wall_seconds": 226.2,
+ "notes": "real TrashNet glass-vs-plastic, full_frame",
+ "source": "wall time as printed by the run at the time (see README/study log); recorded here because the curated CSV union overwrote it"
+}
